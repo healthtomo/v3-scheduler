@@ -89,7 +89,7 @@ export default function NylasSchedulerEditor({
     };
 
     return (
-        <div className=" m-auto flex items-center justify-center h-full bg-color[#FBFBFB]">
+        <div className=" m-auto flex items-center justify-center h-full bg-white">
             <ClientOnly fallback={<FallBack />}>
                 {() => {
                     return (

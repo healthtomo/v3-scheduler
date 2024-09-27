@@ -3,7 +3,7 @@ Nylas scheduling shadow parts
 */
 
 :root {
-  --theme-color: green;
+  --theme-color: #df403f;
 }
 
 nylas-scheduling::part(ndp__date--selected) {
