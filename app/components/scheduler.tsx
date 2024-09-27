@@ -86,34 +86,39 @@ export default function NylasCustomScheduler({
     }, [sessionId, bookingInfo, configId]);
 
     return (
-        <div className=" m-auto flex h-full items-center justify-center bg-white">
-            <ClientOnly fallback={<FallBack />}>
-                {() => {
-                    return (
-                        <Scheduler.NylasScheduling
-                            schedulerApiUrl={domain}
-                            nylasBranding={false}
-                            onBookingRefExtracted={onBookingRefExtracted}
-                            eventOverrides={{
-                                detailsConfirmed: commonEventHander,
-                                bookingInfo: commonEventHander,
-                                //bookingFormSubmitted: commonEventHander,
+        <div className=" m-auto flex flex-col h-full items-center justify-center bg-white">
+            <div className="flex flex-col items-left">
+                <div className="mb-4 !max-w-[260px]">
+                    <img src="/full_logo.avif" alt="Logo" />
+                </div>
+                <ClientOnly fallback={<FallBack />}>
+                    {() => {
+                        return (
+                            <Scheduler.NylasScheduling
+                                schedulerApiUrl={domain}
+                                nylasBranding={false}
+                                onBookingRefExtracted={onBookingRefExtracted}
+                                eventOverrides={{
+                                    detailsConfirmed: commonEventHander,
+                                    bookingInfo: commonEventHander,
+                                    //bookingFormSubmitted: commonEventHander,
 
-                            }}
-                            onBookedEventInfo={(event: CustomEvent) => {
-                                console.log(event);
-                            }}
-                            {...(cancelFlow && { cancelBookingRef: bookingId })}
-                            {...(rescheduleFlow && { rescheduleBookingRef: bookingId })}
-                            {...props}
-                            themeConfig={{
-                                "--nylas-primary": "#DF403F",
-                                "--nylas-base-500": "#DF403F",
-                            }}
-                        ></Scheduler.NylasScheduling>
-                    );
-                }}
-            </ClientOnly>
+                                }}
+                                onBookedEventInfo={(event: CustomEvent) => {
+                                    console.log(event);
+                                }}
+                                {...(cancelFlow && { cancelBookingRef: bookingId })}
+                                {...(rescheduleFlow && { rescheduleBookingRef: bookingId })}
+                                {...props}
+                                themeConfig={{
+                                    "--nylas-primary": "#DF403F",
+                                    "--nylas-base-500": "#DF403F",
+                                }}
+                            ></Scheduler.NylasScheduling>
+                        );
+                    }}
+                </ClientOnly>
+            </div>
         </div>
     );
 }
