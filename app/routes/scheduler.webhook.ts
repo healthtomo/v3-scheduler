@@ -49,7 +49,7 @@ export async function action({ request }: ActionFunctionArgs) {
             status: 400,
         });
     }
-
+    console.log(webhookData);
     await fetch(`${configServer.BUBBLE_WEBHOOK_ENDPOINT}`, {
         method: "POST",
         headers: {
