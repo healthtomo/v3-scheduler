@@ -57,7 +57,7 @@ export async function action({ request }: ActionFunctionArgs) {
         },
         body: JSON.stringify({
 
-            id: webhookData.data.object.id,
+            id: webhookData.data.object.booking_id,
             type: webhookData.type,
         }),
     });
