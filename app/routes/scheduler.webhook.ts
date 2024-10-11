@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-    const body = await request.json();
+    const webhookData = await request.json();
 
     if (!configServer.BUBBLE_WEBHOOK_ENDPOINT) {
         return new Response(null, {
@@ -56,8 +56,9 @@ export async function action({ request }: ActionFunctionArgs) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            id: body.id,
-            type: body.type,
+
+            id: webhookData.data.object.id,
+            type: webhookData.type,
         }),
     });
 
