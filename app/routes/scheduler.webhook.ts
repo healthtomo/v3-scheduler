@@ -52,15 +52,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
     const webhookData = await request.json();
-    console.log(JSON.stringify(webhookData, null, 2));
     const body = {
-        grant_id: webhookData?.data?.grant_id ?? "",
-        event_id: webhookData?.data?.object?.id ?? "",
-        calendar_id: webhookData?.data?.object?.calendar_id ?? "",
+        grant_id: webhookData?.data?.grant_id || "",
+        event_id: webhookData?.data?.object?.id || "",
+        calendar_id: webhookData?.data?.object?.calendar_id || "",
         type: webhookData.type
-    }
-
-    console.log(body);
+    };
 
     if (!configServer.BUBBLE_WEBHOOK_ENDPOINT) {
         return new Response(null, {
