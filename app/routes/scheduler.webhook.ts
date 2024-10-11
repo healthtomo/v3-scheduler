@@ -25,8 +25,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            id: "string",
+            booking_id: "string",
             type: "string",
+            configuration_id: "string"
         }),
     });
 
@@ -56,9 +57,9 @@ export async function action({ request }: ActionFunctionArgs) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-
-            id: webhookData.data.object.booking_id,
+            booking_id: webhookData.data.object.booking_id,
             type: webhookData.type,
+            configuration_id: webhookData?.data?.object?.configuration_id ?? "",
         }),
     });
 
