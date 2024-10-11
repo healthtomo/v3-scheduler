@@ -1,6 +1,13 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import configServer from "~/models/config.server";
 
+// type EventWebhookBody = {
+//     grant_id: string;
+//     event_id: string;
+//     calendar_id: string;
+//     type: string;
+// };
+
 export async function loader({ request }: LoaderFunctionArgs) {
     const url = new URL(request.url);
 
@@ -25,9 +32,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            booking_id: "string",
+            grant_id: "string",
+            event_id: "string",
+            calendar_id: "string",
             type: "string",
-            configuration_id: "string"
         }),
     });
 
@@ -45,6 +53,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
     const webhookData = await request.json();
 
+    const body = {
+        grant_id: webhookData?.data?.grant_id ?? "",
+        event_id: webhookData?.data?.object?.id ?? "",
+        calendar_id: webhookData?.data?.object?.calendar_id ?? "",
+        type: webhookData.type
+    }
+
     if (!configServer.BUBBLE_WEBHOOK_ENDPOINT) {
         return new Response(null, {
             status: 400,
@@ -56,11 +71,7 @@ export async function action({ request }: ActionFunctionArgs) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            booking_id: webhookData.data.object.booking_id,
-            type: webhookData.type,
-            configuration_id: webhookData?.data?.object?.configuration_id ?? "",
-        }),
+        body: JSON.stringify(body),
     });
 
     return new Response(null, {
