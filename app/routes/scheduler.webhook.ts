@@ -58,21 +58,14 @@ export async function action({ request }: ActionFunctionArgs) {
         calendar_id: webhookData?.data?.object?.calendar_id || "",
         type: webhookData.type
     };
-    let bubbleEndpoint;
 
-    if (webhookData.type.includes("booking")) {
-        bubbleEndpoint = configServer.BUBBLE_WEBHOOK_ENDPOINT_BOOKING;
-    } else {
-        bubbleEndpoint = configServer.BUBBLE_WEBHOOK_ENDPOINT_EVENT;
-    }
-
-    if (!bubbleEndpoint) {
+    if (!configServer.BUBBLE_WEBHOOK_ENDPOINT) {
         return new Response(null, {
             status: 400,
         });
     }
 
-    await fetch(`${bubbleEndpoint}`, {
+    await fetch(`${configServer.BUBBLE_WEBHOOK_ENDPOINT}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
