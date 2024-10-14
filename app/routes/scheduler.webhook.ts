@@ -19,45 +19,51 @@ export async function loader({ request }: LoaderFunctionArgs) {
         });
     }
 
-    if (!configServer.BUBBLE_WEBHOOK_ENDPOINT) {
+    if (!configServer.BUBBLE_WEBHOOK_ENDPOINT_EVENTS) {
         return new Response(null, {
             status: 400,
         });
     }
 
-    const bubbleEventEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
-    const bubbleBookingEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
+    if (!configServer.BUBBLE_WEBHOOK_ENDPOINT_BOOKING) {
+        return new Response(null, {
+            status: 400,
+        });
+    }
+
+    // const bubbleEventEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
+    // const bubbleBookingEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_BOOKING;
     // call the bubble endpoint to initialize it with the id and type
-    const bubbleBookingInitResponse = await fetch(`${bubbleBookingEndpoint}/initalize`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            grant_id: "string",
-            event_id: "string",
-            calendar_id: "string",
-            type: "string",
-        }),
-    });
+    // const bubbleBookingInitResponse = await fetch(`${bubbleBookingEndpoint}/initalize`, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //         grant_id: "string",
+    //         event_id: "string",
+    //         calendar_id: "string",
+    //         type: "string",
+    //     }),
+    // });
 
-    // if (bubbleBookingInitResponse.status !== 200) {
-    //     return new Response(null, {
-    //         status: 400,
-    //     });
-    // }
+    // // if (bubbleBookingInitResponse.status !== 200) {
+    // //     return new Response(null, {
+    // //         status: 400,
+    // //     });
+    // // }
 
-    const bubbleEventInitResponse = await fetch(`${bubbleEventEndpoint}/initalize`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            booking_id: "string",
-            config_id: "string",
-            type: "string"
-        }),
-    });
+    // const bubbleEventInitResponse = await fetch(`${bubbleEventEndpoint}/initalize`, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //         booking_id: "string",
+    //         config_id: "string",
+    //         type: "string"
+    //     }),
+    // });
 
     // if (bubbleEventInitResponse.status !== 200) {
     //     return new Response(null, {
