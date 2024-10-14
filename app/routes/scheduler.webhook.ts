@@ -25,8 +25,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         });
     }
 
+    const bubbleEventEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
+    const bubbleBookingEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
     // call the bubble endpoint to initialize it with the id and type
-    const bubbleInitResponse = await fetch(`${configServer.BUBBLE_WEBHOOK_ENDPOINT}/initalize`, {
+    const bubbleBookingInitResponse = await fetch(`${bubbleBookingEndpoint}/initalize`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -39,11 +41,29 @@ export async function loader({ request }: LoaderFunctionArgs) {
         }),
     });
 
-    if (bubbleInitResponse.status !== 200) {
-        return new Response(null, {
-            status: 400,
-        });
-    }
+    // if (bubbleBookingInitResponse.status !== 200) {
+    //     return new Response(null, {
+    //         status: 400,
+    //     });
+    // }
+
+    const bubbleEventInitResponse = await fetch(`${bubbleEventEndpoint}/initalize`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            booking_id: "string",
+            config_id: "string",
+            type: "string"
+        }),
+    });
+
+    // if (bubbleEventInitResponse.status !== 200) {
+    //     return new Response(null, {
+    //         status: 400,
+    //     });
+    // }
 
     return new Response(challenge, {
         status: 200,
@@ -52,20 +72,34 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
     const webhookData = await request.json();
-    const body = {
-        grant_id: webhookData?.data?.grant_id || "",
-        event_id: webhookData?.data?.object?.id || "",
-        calendar_id: webhookData?.data?.object?.calendar_id || "",
-        type: webhookData.type
-    };
+    let body;
+    let bubbleEndpoint;
+    if (webhookData.type.includes("event")) {
+        bubbleEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
+        body = {
+            grant_id: webhookData?.data?.grant_id || "",
+            event_id: webhookData?.data?.object?.id || "",
+            calendar_id: webhookData?.data?.object?.calendar_id || "",
+            type: webhookData.type
+        };
+    } else if (webhookData.type.includes("booking")) {
+        bubbleEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_BOOKING;
+        body = {
+            booking_id: webhookData?.data?.object.booking_id || "",
+            config_id: webhookData?.data?.object.configuration_id || "",
+            type: webhookData.type
+        };
+    }
 
-    if (!configServer.BUBBLE_WEBHOOK_ENDPOINT) {
+    console.log(JSON.stringify(body));
+
+    if (!bubbleEndpoint) {
         return new Response(null, {
             status: 400,
         });
     }
 
-    await fetch(`${configServer.BUBBLE_WEBHOOK_ENDPOINT}`, {
+    await fetch(`${bubbleEndpoint}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
