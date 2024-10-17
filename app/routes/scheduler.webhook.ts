@@ -80,6 +80,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const webhookData = await request.json();
     let body;
     let bubbleEndpoint;
+    console.log(webhookData)
 
     if (webhookData.type.includes("event")) {
         bubbleEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
