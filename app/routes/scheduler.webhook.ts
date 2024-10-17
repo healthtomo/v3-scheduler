@@ -80,7 +80,6 @@ export async function action({ request }: ActionFunctionArgs) {
     const webhookData = await request.json();
     let body;
     let bubbleEndpoint;
-    console.log(JSON.stringify(webhookData));
 
     if (webhookData.type.includes("event")) {
         bubbleEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
@@ -88,15 +87,19 @@ export async function action({ request }: ActionFunctionArgs) {
             grant_id: webhookData?.data?.grant_id || "",
             event_id: webhookData?.data?.object?.id || "",
             calendar_id: webhookData?.data?.object?.calendar_id || "",
-            type: webhookData.type
+            type: webhookData.type,
+            raw_body: JSON.stringify(webhookData),
         };
     } else if (webhookData.type.includes("booking")) {
         bubbleEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_BOOKING;
+
         body = {
             booking_id: webhookData?.data?.object.booking_id || "",
             config_id: webhookData?.data?.object.configuration_id || "",
             type: webhookData.type,
             booking_ref: webhookData?.data?.object?.booking_ref || "",
+            additional_fields: JSON.stringify(webhookData?.data?.object.booking_info.additional_fields || {}),
+            raw_body: JSON.stringify(webhookData),
         };
     }
 
