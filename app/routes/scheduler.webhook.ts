@@ -110,14 +110,14 @@ export async function action({ request }: ActionFunctionArgs) {
         });
     }
 
-    await fetch(`${bubbleEndpoint}`, {
+    console.log(JSON.stringify(body));
+    const res = await fetch(`${bubbleEndpoint}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
     });
-
     return new Response(null, {
         status: 200,
     });
