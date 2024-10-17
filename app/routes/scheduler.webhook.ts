@@ -31,9 +31,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
         });
     }
 
+    // call the bubble endpoint to initialize it with the id and type
     // const bubbleEventEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
     // const bubbleBookingEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_BOOKING;
-    // call the bubble endpoint to initialize it with the id and type
     // const bubbleBookingInitResponse = await fetch(`${bubbleBookingEndpoint}/initalize`, {
     //     method: "POST",
     //     headers: {
@@ -80,6 +80,8 @@ export async function action({ request }: ActionFunctionArgs) {
     const webhookData = await request.json();
     let body;
     let bubbleEndpoint;
+    console.log(webhookData);
+
     if (webhookData.type.includes("event")) {
         bubbleEndpoint = process.env.BUBBLE_WEBHOOK_ENDPOINT_EVENTS;
         body = {
@@ -96,8 +98,6 @@ export async function action({ request }: ActionFunctionArgs) {
             type: webhookData.type
         };
     }
-
-    console.log(JSON.stringify(body));
 
     if (!bubbleEndpoint) {
         return new Response(null, {
