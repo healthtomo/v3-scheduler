@@ -125,7 +125,7 @@ export default function NylasSchedulerEditor({
                             }}
                             defaultSchedulerConfigState={{
                                 selectedConfiguration: {
-                                    requires_session_auth: false,
+                                    requires_session_auth: true,
                                     scheduler: {
                                         // NOTE: Keep this path same for reschedule and cancel flow
                                         rescheduling_url: `${origin}/scheduler/reschedule/:booking_ref`,
