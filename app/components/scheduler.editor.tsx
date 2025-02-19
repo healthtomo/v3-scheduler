@@ -118,11 +118,13 @@ export default function NylasSchedulerEditor({
                             mode="app"
                             nylasSessionsConfig={{
                                 clientId: nylasClientId, // Replace with your Nylas client ID from the previous
+                                
                                 redirectUri: `${origin}/editor`,
                                 domain: domain, // or 'https://api.eu.nylas.com/v3' for EU data center
                                 hosted: true,
                                 accessType: "offline",
-                            }}
+                            }
+                             hideEditorTabs={["participants"]}
                             defaultSchedulerConfigState={{
                                 selectedConfiguration: {
                                     requires_session_auth: true,
