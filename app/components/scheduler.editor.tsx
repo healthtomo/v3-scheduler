@@ -116,7 +116,7 @@ export default function NylasSchedulerEditor({
                                 },
                             }}
                             mode="app"
-                            hideEditorTabs={["participants"]}
+                            hideEditorTabs={["participants", "eventInfo"]}
                             nylasSessionsConfig={{
                                 clientId: nylasClientId, // Replace with your Nylas client ID from the previous
                                 
