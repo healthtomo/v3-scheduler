@@ -116,6 +116,7 @@ export default function NylasSchedulerEditor({
                                 },
                             }}
                             mode="app"
+                            hideEditorTabs={["participants"]}
                             nylasSessionsConfig={{
                                 clientId: nylasClientId, // Replace with your Nylas client ID from the previous
                                 
@@ -124,7 +125,6 @@ export default function NylasSchedulerEditor({
                                 hosted: true,
                                 accessType: "offline",
                             }
-                             hideEditorTabs={["participants"]}
                             defaultSchedulerConfigState={{
                                 selectedConfiguration: {
                                     requires_session_auth: true,
